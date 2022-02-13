@@ -27,7 +27,7 @@ CPlayer::CPlayer(CGameContext *pGameServer, int ClientID, int Team, int Zomb)
 	mem_zero(m_SubZomb, sizeof(m_SubZomb));
 
 	m_Item.m_Dmg = 0;
-	m_Item.m_HP = 0;
+	m_Item.m_HP = 1;
 }
 
 CPlayer::~CPlayer()
