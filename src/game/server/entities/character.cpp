@@ -107,7 +107,7 @@ bool CCharacter::Spawn(CPlayer *pPlayer, vec2 Pos)
 		m_Move.m_LastX = m_Pos.x;
 
 		//Aim
-		m_Aim.m_Angle = rand()%15*12;//save some CPU, this can result n * 12, for n = 0 until n = 15, n = 0 -> 0°, n = 15 -> 180°
+		m_Aim.m_Angle = rand()%15*12;//save some CPU, this can result n * 12, for n = 0 until n = 15, n = 0 -> 0ï¿½, n = 15 -> 180ï¿½
 		m_Aim.m_Explode = false;
 	}
 
@@ -685,8 +685,8 @@ void CCharacter::Tick()
 	HandleWeapons();
 
 	// Previnput
-	m_PrevInput = m_Input;
-	m_PrevPos = m_Core.m_Pos;
+	//m_PrevInput = m_Input;
+	//m_PrevPos = m_Core.m_Pos;
 }
 
 void CCharacter::TickDefered()
@@ -788,7 +788,7 @@ void CCharacter::TickPaused()
 
 bool CCharacter::IncreaseHealth(int Amount)
 {
-	if(m_Health >= 10 && !m_pPlayer->GetZomb(6) && !m_pPlayer->GetZomb(13))
+	if(m_Health >= GetHealth() && !m_pPlayer->GetZomb(6) && !m_pPlayer->GetZomb(13))
 		return false;
 	m_Health = clamp(m_Health+Amount, 0, 100);
 	return true;
@@ -877,9 +877,14 @@ bool CCharacter::TakeDamage(vec2 Force, int Dmg, int From, int Weapon)
 		m_Core.m_Vel += AddVel;
 	}
 
+	if(From <= 16)
+	{
+		Dmg += m_pPlayer->m_Item.m_Dmg;
+	}
+
 	// m_pPlayer only inflicts half damage on self
 	if(From == m_pPlayer->GetCID())
-		Dmg = max(1, Dmg/2);
+		return false;
 
 	m_DamageTaken++;
 
@@ -1328,4 +1333,9 @@ float CCharacter::GetTriggerDistance(int Type)
 	else if(Type == 3)//Zooker
 		return 380.0f;
 	return 65.0f;//Rest
+}
+
+int CCharacter::GetHealth()
+{
+	return m_Health += m_pPlayer->GetHP();
 }

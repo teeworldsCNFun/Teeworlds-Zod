@@ -119,6 +119,14 @@ public:
 	//12 = Zinvis
 	//13 = Zeater
 	////////////////////////////////
+
+	struct CItems
+	{
+		int m_Dmg;
+		int m_HP;
+	} m_Item;
+	
+	int GetHP() { return m_Item.m_HP;};
 private:
 	CCharacter *m_pCharacter;
 	CGameContext *m_pGameServer;

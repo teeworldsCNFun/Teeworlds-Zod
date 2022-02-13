@@ -162,6 +162,7 @@ public:
 	int GetZombieReihenfolge(int wavedrittel);
 
 	int m_aTeamscore[2];//To set the new round in gamecontext
+	int GetTeamDmg();
 	int GetConfigLife() {return m_NoCheatLife; };
 };
 

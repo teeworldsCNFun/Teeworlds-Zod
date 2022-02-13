@@ -9,6 +9,8 @@
 #include <game/version.h>
 #include <game/collision.h>
 #include <game/gamecore.h>
+#include <stdio.h>
+#include <string.h>
 
 /* no need for this
 #include "gamemodes/dm.h"
@@ -668,8 +670,7 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 			m_MessageReturn = 250;
 			return;
 		}
-		
-		if(!str_comp(pMsg->m_pMessage, "/info") || !str_comp(pMsg->m_pMessage, "/help"))
+		else if(!str_comp(pMsg->m_pMessage, "/info") || !str_comp(pMsg->m_pMessage, "/help"))
 		{
 			CNetMsg_Sv_Motd Msg;
 			Msg.m_pMessage = "~~~Welcome to Zod~~~ \n~~~a harder zombie mod~~~ \n\nIt's made by /\\ssa and based on Fly. \n \nYou have some collective lives to survive. \nSo if one of your teammates dies, you lose a life! \nDo you know all Types of zombies?\nPlay to find out! \n \nI thought it would be good \nto get a harder zombie mod :D";
@@ -677,14 +678,12 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 			m_MessageReturn = 250;
 			return;
 		}
-
-		if(!str_comp(pMsg->m_pMessage, "/start") || !str_comp(pMsg->m_pMessage, "/restart") || !str_comp(pMsg->m_pMessage, "!restart"))
+		else if(!str_comp(pMsg->m_pMessage, "/start") || !str_comp(pMsg->m_pMessage, "/restart") || !str_comp(pMsg->m_pMessage, "!restart"))
 		{
 			StartVote("开始游戏", "restart", "F3开始游戏");
 			return;
 		}
-		
-		if(!str_comp(pMsg->m_pMessage, "/top5"))
+		else if(!str_comp(pMsg->m_pMessage, "/top5"))
 		{
 			CNetMsg_Sv_Motd Msg;
 			char aBuf[900];
@@ -694,15 +693,19 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 			else
 			{
 				str_format(aBuf, sizeof(aBuf), "~~~Top 5~~~");
-
+				SendChatTarget(ClientID, aBuf);
 				for(int i = 0; i < 5; i++)//top 5 TEAMS
 				{
 					if(!m_pTop->m_TopFiveVars.m_aTeams[i].m_NumPlayers)//No Players? End of top 5 list
 						break;
 
 					if(i)
+					{
 						str_format(aBuf, sizeof(aBuf), "%s\n", aBuf);
+						SendChatTarget(ClientID, aBuf);
+					}
 					str_format(aBuf, sizeof(aBuf), "%s \n#%i", aBuf, i+1);
+					SendChatTarget(ClientID, aBuf);
 
 					for(int p = 0; p < m_pTop->m_TopFiveVars.m_aTeams[i].m_NumPlayers; p++)
 					{
@@ -711,19 +714,56 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 						//char bBuf[16] = m_pTop->m_TopFiveVars.m_aTeams[i].m_aaName[p][16];
 						//Console()->Print(IConsole::OUTPUT_LEVEL_DEBUG, "DEBUGGING", &m_pTop->GetName(i, p));
 						if(p)
+						{
 							str_format(aBuf, sizeof(aBuf), "%s,", aBuf);
+							SendChatTarget(ClientID, aBuf);
+						}
 						str_format(aBuf, sizeof(aBuf), "%s %s (%i)", aBuf, m_pTop->m_TopFiveVars.m_aTeams[i].m_aaName[p], m_pTop->m_TopFiveVars.m_aTeams[i].m_aKills[p]);
+						SendChatTarget(ClientID, aBuf);
 					}
 					str_format(aBuf, sizeof(aBuf), "%s:\nKills: %i Wave: %i", aBuf, m_pTop->m_TopFiveVars.m_aTeams[i].m_TeamScore, m_pTop->m_TopFiveVars.m_aTeams[i].m_Waves);
+					SendChatTarget(ClientID, aBuf);
 				}
-				str_format(aBuf, sizeof(aBuf), "%s \n~~~~~~~~~~~", aBuf);
+				str_format(aBuf, sizeof(aBuf), "~~~~~~~~~~~");
+				SendChatTarget(ClientID, aBuf);
 			}
 			//Console()->Print(IConsole::OUTPUT_LEVEL_DEBUG, "DEBUGGING", aBuf);
-
-			Msg.m_pMessage = aBuf;
-			Server()->SendPackMsg(&Msg, MSGFLAG_VITAL, ClientID);
-			m_MessageReturn = 250;
 			return;
+		}
+		else if(!strncmp(pMsg->m_pMessage, "/shop", 4))
+		{
+			if(!str_comp_nocase(pMsg->m_pMessage, "/shop dmg"))
+			{
+				if(m_apPlayers[ClientID]->m_Score >= 10)
+				{
+					m_apPlayers[ClientID]->m_Item.m_Dmg++;
+					m_apPlayers[ClientID]->m_Score -= 10;
+					SendChatTarget(ClientID, "你成功购买了1伤害");
+					return;
+				}
+				SendChatTarget(ClientID, "您没有足够的分数");
+				return;
+			}
+			else if(!str_comp_nocase(pMsg->m_pMessage, "/shop hp"))
+			{
+				if(m_apPlayers[ClientID]->m_Score >= 5){
+					m_apPlayers[ClientID]->m_Item.m_HP++;
+					m_apPlayers[ClientID]->m_Score -= 5;
+					SendChatTarget(ClientID, "你成功购买了1HP");
+					return;}
+				SendChatTarget(ClientID, "您没有足够的分数");
+				return;
+			}
+			else
+			{
+				SendChatTarget(ClientID, "~~~~~~~ 升级列表 ~~~~~~~");
+				SendChatTarget(ClientID, "1. 输入/shop hp 升级 - 血量 - 提升你的总血量 - 价格5分");
+				SendChatTarget(ClientID, "2. 输入/shop dmg 升级 - 攻击力 - 提升你的攻击力 - 价格5分");
+				SendChatTarget(ClientID, "更多升级项敬请期待");
+				SendChatTarget(ClientID, "~~~~~~~ 升级列表 ~~~~~~~");
+				SendChatTarget(ClientID, "提示：所有升级将在你退出游戏或换图后重置（分数同样）");
+				return;
+			}
 		}
 		int Team = pMsg->m_Team;
 		if(Team)

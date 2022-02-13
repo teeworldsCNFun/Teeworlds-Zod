@@ -91,7 +91,8 @@ public:
 		bool m_Explode;
 	} m_Aim;
 	bool m_IsVisible;
-	
+
+	int GetHealth();	
 private:
 	// player controlling this character
 	class CPlayer *m_pPlayer;

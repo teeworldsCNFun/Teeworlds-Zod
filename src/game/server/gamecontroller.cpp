@@ -727,6 +727,8 @@ int IGameController::ClampTeam(int Team)
 
 void IGameController::StartWave(int Wave)
 {
+	//Boom, Server down
+	mem_zero(m_Zombie, sizeof(m_Zombie));
 	if(!Wave)//Well, just in case ^^ shouldn't be needed
 		return;
 	//Zaby, Zaby has no alround wave
@@ -1187,3 +1189,13 @@ int IGameController::GetZombieReihenfolge(int wavedrittel)//Was hei�t Riehenfo
 	else//shouldnt be needed
 		return 0;
 }
+
+int IGameController::GetTeamDmg() 
+{
+	int dmg;
+	for(int i = 0 ; i > 16 ; i++)
+	{
+		dmg += GameServer()->m_apPlayers[i]->GetHP();
+	}
+	return dmg;
+};
