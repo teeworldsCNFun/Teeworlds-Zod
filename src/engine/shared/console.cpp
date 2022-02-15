@@ -433,7 +433,6 @@ void CConsole::ExecuteFile(const char *pFilename)
 
 void CConsole::Con_Echo(IResult *pResult, void *pUserData)
 {
-	((CConsole*)pUserData)->Print(IConsole::OUTPUT_LEVEL_STANDARD, "Console", pResult->GetString(0));
 }
 
 void CConsole::Con_Exec(IResult *pResult, void *pUserData)

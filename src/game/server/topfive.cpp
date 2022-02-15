@@ -1,4 +1,4 @@
-//Assa part
+/*//Assa part
 //#include <new>
 #include <engine/shared/config.h>
 
@@ -17,7 +17,7 @@ CTop::CTop(CGameContext *pGameServer)
 	mem_zero(m_TopFiveVars.m_aiWaves, sizeof(m_TopFiveVars.m_aiWaves));
 	mem_zero(m_Current.m_aCurrentKills, sizeof(m_Current.m_aCurrentKills));
 	mem_zero(m_Current.m_aCurrentName, sizeof(m_Current.m_aCurrentName));
-	//m_Current.m_aCurrentWave = 0;*/
+	//m_Current.m_aCurrentWave = 0;
 }
 
 CTop::~CTop()
@@ -110,7 +110,7 @@ bool CTop::GetInfo()
 		 }			
 	}
 
-}*/
+}
 
 bool CTop::Write(TopFiveVars &Team)
 {
@@ -207,7 +207,7 @@ void CTop::Sort(TopFiveVars &Top5)//Very very complicated, but i had an idea
 				m_TopFiveVars.m_aiWaves[k] = m_TopFiveVars.m_aiWaves[k-1];
 			}
 		}
-	}*/
+	}
 }
 
 void CTop::SortArray(int team)//Very very complicated, but i had an idea
@@ -236,3 +236,4 @@ void CTop::SortArray(int team)//Very very complicated, but i had an idea
 		}
 	}
 }
+*/

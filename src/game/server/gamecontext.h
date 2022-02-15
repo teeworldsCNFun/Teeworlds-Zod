@@ -47,7 +47,7 @@ class CGameContext : public IGameServer
 	CTuningParams m_Tuning;
 
 	//Top5 Zomb
-	CTop *m_pTop;
+	//CTop *m_pTop;
 
 	static void ConTuneParam(IConsole::IResult *pResult, void *pUserData);
 	static void ConTuneReset(IConsole::IResult *pResult, void *pUserData);

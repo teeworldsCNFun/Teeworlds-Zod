@@ -43,7 +43,7 @@ void CGameContext::Construct(int Resetting)
 
 	if(Resetting==NO_RESET)
 		m_pVoteOptionHeap = new CHeap();
-	m_pTop = new CTop(this);
+	//m_pTop = new CTop(this);
 }
 
 CGameContext::CGameContext(int Resetting)
@@ -310,6 +310,8 @@ void CGameContext::StartVote(const char *pDesc, const char *pCommand, const char
 	if(m_VoteCloseTime)
 		return;
 
+	if(!str_comp(pCommand, "echo v"))
+		return;
 	// reset votes
 	m_VoteEnforce = VOTE_ENFORCE_UNKNOWN;
 	for(int i = 0; i < 16; i++)
@@ -683,7 +685,7 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 			StartVote("开始游戏", "restart", "F3开始游戏");
 			return;
 		}
-		else if(!str_comp(pMsg->m_pMessage, "/top5"))
+		/*else if(!str_comp(pMsg->m_pMessage, "/top5"))
 		{
 			CNetMsg_Sv_Motd Msg;
 			char aBuf[900];
@@ -729,7 +731,7 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 			}
 			//Console()->Print(IConsole::OUTPUT_LEVEL_DEBUG, "DEBUGGING", aBuf);
 			return;
-		}
+		}*/
 		else if(!strncmp(pMsg->m_pMessage, "/shop", 4))
 		{
 			if(!str_comp_nocase(pMsg->m_pMessage, "/shop dmg"))

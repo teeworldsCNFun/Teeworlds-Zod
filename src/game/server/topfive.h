@@ -1,4 +1,4 @@
-#ifndef GAME_SERVER_TOPFIVE_H
+/*#ifndef GAME_SERVER_TOPFIVE_H
 #define GAME_SERVER_TOPFIVE_H
 
 #include <base/math.h>
@@ -43,3 +43,4 @@ public:
 	//void Test();
 };
 #endif
+*/
