@@ -64,7 +64,7 @@ protected:
 
 public:
 	const char *m_pGameType;
-	CTop *m_pTop;
+//	CTop *m_pTop;
 
 	bool IsTeamplay() const;
 	bool IsGameOver() const { return m_GameOverTick != -1; }

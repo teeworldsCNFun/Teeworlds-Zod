@@ -36,7 +36,7 @@ IGameController::IGameController(class CGameContext *pGameServer)
 	m_aNumSpawnPoints[2] = 0;
 
 	//Zomb2
-	m_pTop = new CTop(m_pGameServer);
+//	m_pTop = new CTop(m_pGameServer);
 	m_Wave = 0;
 	mem_zero(m_Zombie, sizeof(m_Zombie));
 }
@@ -1068,7 +1068,7 @@ void IGameController::DoLifeMessage(int Life)
 
 void IGameController::HandleTop()
 {
-	//char aBuf[16];
+/*	//char aBuf[16];
 	if(m_pTop->GetInfo())//File exist
 	{
 		if(m_pTop->m_TopFiveVars.m_aTeams[4].m_TeamScore < m_aTeamscore[TEAM_RED])
@@ -1130,7 +1130,7 @@ void IGameController::HandleTop()
 		}
 		m_pTop->SortArray(0);
 	}
-	m_pTop->Write(m_pTop->m_TopFiveVars);
+	m_pTop->Write(m_pTop->m_TopFiveVars);*/
 }
 
 void IGameController::SetWaveAlg(int modulus, int wavedrittel)
